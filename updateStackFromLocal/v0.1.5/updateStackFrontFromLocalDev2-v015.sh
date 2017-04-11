@@ -1,22 +1,20 @@
 #!/bin/bash
 
-
-
-
 #location of the dist folder after created locally with gulp build
-sendFile="/home/t/Desktop/gitDMC/dmcfront/v0.1.3/dmcfront/dist/"
+sendFile="/home/t/Desktop/gitDMC/dmcfront/v0.1.5/dmcfrontMaster/dmcfront/dist/"
+
 #key for frontend machine
-front_ssh_keyC="/home/t/Desktop/keys/portalAzure/v0.1.3/azu02132017v1"
+front_ssh_keyC="/home/t/Desktop/keys/portalAzure/v0.1.3/web2v03132017"
 #front machine user do not chnage for aws
 front_userC=dmcAdmin
 #ip of frontend machine
-front_hostC="40.69.163.95"
+front_hostC="13.84.48.175"
 serverURL="dev-web2.opendmc.org"
-
 
 scpSend() {
    timestamp=`date --rfc-3339=seconds`
     echo "Version created $timestamp" > "DeployedVersion.txt";
+    echo "Navigating to the Dist folder at the following location "$sendFile
     scp -i $front_ssh_keyC -r DeployedVersion.txt $front_userC@$front_hostC:~
     scp -i $front_ssh_keyC -r $sendFile $front_userC@$front_hostC:~
 
@@ -39,11 +37,10 @@ updateFront() {
     #update the loginURL
     cd /tmp/dist/templates/common/header
     echo "setting the login url -- serverURL is =$serverURL"
-    if [ $serverURL == "beta.opendmc.org" || $serverURL == "portal.opendmc.org" ]
+    if [ $serverURL=="beta.opendmc.org" || $serverURL=="portal.opendmc.org" ]
      then
        sed -i.bak "s|loginURL|https://apps.cirrusidentity.com/console/ds/index?entityID=https://beta/shibboleth\&return=https://$serverURL/Shibboleth.sso/Login%3Ftarget%3Dhttps%3A%2F%2F$serverURL|" header-tpl.html
      else
-
         sed -i.bak "s|loginURL|https://apps.cirrusidentity.com/console/ds/index?entityID=https://dev-web1.opendmc.org/shibboleth\&return=https://$serverURL/Shibboleth.sso/Login%3Ftarget%3Dhttps%3A%2F%2F$serverURL|" header-tpl.html
     fi
 
