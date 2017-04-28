@@ -4,9 +4,9 @@
 
 
 #location of the dist folder after created locally with gulp build
-sendFile="/home/t/Desktop/gitDMC/dmcfront/v0.1.3/dmcfront/dist/"
+sendFile="/home/dmcdevelopment/Desktop/gitDMC/dmcfront/v0.1.3/dmcfront/dist/"
 #key for frontend machine
-front_ssh_keyC="/home/t/Desktop/keys/portalAzure/v0.1.3/azu02132017v1"
+front_ssh_keyC="/home/dmcdevelopment/Desktop/keys/portalAzure/v0.1.3/azu02132017v1"
 #front machine user do not chnage for aws
 front_userC=dmcAdmin
 #ip of frontend machine

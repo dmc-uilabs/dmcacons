@@ -2,10 +2,10 @@
 
 
 #location of the dist folder after created locally with gulp build
-sendFile="/home/t/Desktop/gitDMC/dmcrest/v0.1.3/dmcrest/target/dmc-site-services-0.1.0-swagger.war"
+sendFile="/home/dmcdevelopment/Desktop/gitDMC/dmcrest/v0.1.3/dmcrest/target/dmc-site-services-0.1.0-swagger.war"
 
 #key for frontend machine
-rest_ssh_keyC="/home/t/Desktop/keys/portalAzure/v0.1.3/azu03062017v1"
+rest_ssh_keyC="/home/dmcdevelopment/Desktop/keys/portalAzure/v0.1.3/azu03062017v1"
 #front machine user do not chnage for aws
 rest_userC=dmcAdmin
 #ip of frontend machine
