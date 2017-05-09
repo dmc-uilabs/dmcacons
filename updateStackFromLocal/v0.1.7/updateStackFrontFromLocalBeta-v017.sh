@@ -4,12 +4,12 @@
 sendFile="/home/dmcdevelopment/Desktop/gitDMC/dmcfront/v0.1.7/dmcfrontMaster/dmcfront/dist/"
 
 #key for frontend machine
-front_ssh_keyC="/home/dmcdevelopment/Desktop/keys/portalAzure/v0.1.3/web2v03132017"
+front_ssh_keyC="/home/dmcdevelopment/Desktop/keys/portalAzure/v0.1.3/betav040417"
 #front machine user do not chnage for aws
 front_userC=dmcAdmin
 #ip of frontend machine
-front_hostC="13.84.48.175"
-serverURL="dev-web2.opendmc.org"
+# front_hostC="40.71.94.100"
+serverURL="portal.opendmc.org"
 
 scpSend() {
    timestamp=`date --rfc-3339=seconds`
