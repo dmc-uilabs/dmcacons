@@ -10,4 +10,4 @@ pwd
 gulp build
 
 cd /home/dmcdevelopment/dmc/dmcacons/updateStackFromLocal/v0.1.8
-./updateStackFrontFromLocalBeta-v018.sh
+./updateStackFrontFromLocalDev2-v018.sh

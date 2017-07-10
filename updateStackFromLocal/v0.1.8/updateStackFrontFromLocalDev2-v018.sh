@@ -1,74 +1,137 @@
 #!/bin/bash
-
 #location of the dist folder after created locally with gulp build
+
 sendFile="/home/dmcdevelopment/Desktop/gitDMC/dmcfront/v0.1.8/dmcfrontMaster/dmcfront/dist/"
 
 #key for frontend machine
-front_ssh_keyC="/home/dmcdevelopment/Desktop/keys/portalAzure/v0.1.3/portal017"
+
+front_ssh_keyC="/home/dmcdevelopment/Desktop/keys/portalAzure/v0.1.3/web2v03132017"
+
 #front machine user do not chnage for aws
-front_userC=dmcOwner
+
+front_userC=dmcAdmin
+
 #ip of frontend machine
-front_hostC="40.78.102.82"
-serverURL="portal.opendmc.org"
+
+front_hostC="13.84.48.175"
+
+serverURL="dev-web2.opendmc.org"
 
 scpSend() {
+
    timestamp=`date --rfc-3339=seconds`
+
     echo "Version created $timestamp" > "DeployedVersion.txt";
+
     echo "Navigating to the Dist folder at the following location "$sendFile
-    scp -i $front_ssh_keyC -r DeployedVersion.txt $front_userC@$front_hostC:/tmp
+
+    scp -i $front_ssh_keyC -r DeployedVersion.txt $front_userC@$front_hostC:~
+
     scp -i $front_ssh_keyC -r $sendFile $front_userC@$front_hostC:~
 
-
     updateFront
+
 }
 
 updateFront() {
+
   ssh -tti $front_ssh_keyC $front_userC@$front_hostC <<+
+
     printf "Updating frontend Code Base"
+
     # sudo yum update -y
-     #
+
      cd /tmp
+
      rm -rf dist
+
      cp -r ~/dist .
+
     # unzip *.zip
-    #code is now in /tmp/rando/dist
 
+    # #code is now in /tmp/rando/dist
 
-  #  update the loginURL
+    #
+
+    #
+
+    #update the loginURL
+
     cd /tmp/dist/templates/common/header
+
     echo "setting the login url -- serverURL is =$serverURL"
+
     if [ $serverURL=="beta.opendmc.org" || $serverURL=="portal.opendmc.org" ]
+
      then
+
        sed -i.bak "s|loginURL|https://apps.cirrusidentity.com/console/ds/index?entityID=https://beta/shibboleth\&return=https://$serverURL/Shibboleth.sso/Login%3Ftarget%3Dhttps%3A%2F%2F$serverURL|" header-tpl.html
+
      else
-        sed -i.bak "s|loginURL|https://apps.cirrusidentity.com/console/ds/index?entityID=https://dev-web1.opendmc.org/shibboleth\&return=https://$serverURL/Shibboleth.sso/Login%3Ftarget%3Dhttps%3A%2F%2F$serverURL|" header-tpl.html
+
+        sed -i.bak "s|loginURL|https://apps.cirrusidentity.com/console/ds/index?entityID=https://beta.opendmc.org/shibboleth\&return=https://$serverURL/Shibboleth.sso/Login%3Ftarget%3Dhttps%3A%2F%2F$serverURL|" header-tpl.html
+
     fi
 
 
+    #update the loginURL for the index page (eventually will be DMDII signup page)
+
+    cd /tmp/dist/templates/index
+
+    echo "setting the login url -- serverURL is =$serverURL"
+
+    if [ $serverURL=="beta.opendmc.org" || $serverURL=="portal.opendmc.org" ]
+
+     then
+
+       sed -i.bak "s|loginURL|https://apps.cirrusidentity.com/console/ds/index?entityID=https://beta/shibboleth\&return=https://$serverURL/Shibboleth.sso/Login%3Ftarget%3Dhttps%3A%2F%2F$serverURL|" index.html
+
+     else
+
+        sed -i.bak "s|loginURL|https://apps.cirrusidentity.com/console/ds/index?entityID=https://beta.opendmc.org/shibboleth\&return=https://$serverURL/Shibboleth.sso/Login%3Ftarget%3Dhttps%3A%2F%2F$serverURL|" index.html
+
+    fi
+
     # #update the windowApiUrl
+
     cd /tmp/dist/
 
     sed -i.bak "s|window.apiUrl = '';|window.apiUrl='https://$serverURL/rest'|" *.php
 
     ## update the version
+
     cd templates/common/footer
+
     timestamp=`date --rfc-3339=seconds`
+
     sudo sed -i.bak "s|2015 Digital Manufacturing Commons|2015 Digital Manufacturing Commons version: $timestamp  |" footer-tpl.html
 
     #
+
     # remove old code from apache
+
      mkdir -p /tmp/oldwww
+
      cd /tmp/oldwww
+
      sudo mv -p /var/www/html/* /tmp/oldwww
+
      sudo rm -rf /var/www/html/*
+
     # #moving files to web forlder
+
      sudo mv /tmp/dist/* /var/www/html/
+
     # restart apache
+
     sudo systemctl restart httpd
+
     exit
 
 +
+
 }
 
 scpSend
+
 echo "done updating -- back on local and done :)"

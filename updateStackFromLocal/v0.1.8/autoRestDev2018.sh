@@ -10,4 +10,4 @@ pwd
 mvn package -P swagger
 
 cd /home/dmcdevelopment/dmc/dmcacons/updateStackFromLocal/v0.1.8
-./updateStackRestFromLocalBetav018.sh
+./updateStackRestFromLocalDev02v018.sh
